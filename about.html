@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>About Us - NutriVerse AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;400&display=swap" rel="stylesheet" />
+<style>
+  :root { --green-700:#18803a; --card-bg-start:#e6fff5; --card-bg-end:#cdfadd; }
+
+  html,body{
+    margin:0; padding:0; width:100vw; min-height:100vh;
+    font-family:'Poppins',sans-serif;
+    background: linear-gradient(120deg,#eafee1 0%,#d0f4c5 58%,#2e7d32 100%);
+    color:#121212; overflow-x:hidden;
+  }
+
+  header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 80px;
+  background: #409543;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  box-shadow: 0 2px 15px rgba(32, 80, 25, 0.35);
+}
+nav {
+  display: flex;
+  gap: 56px;
+  justify-content: center;
+  flex: 1;
+}
+nav a {
+  color: #000;
+  font-size: 1.23rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-decoration: none;
+  transition: color 0.25s;
+}
+nav a:hover {
+  color: #1b5e20;
+}
+.nav-btn {
+  background: #000;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.22rem;
+  border: none;
+  border-radius: 32px;
+  padding: 14px 40px;
+  margin-right: 38px;
+  box-shadow: 0 5px 18px #0006;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+.nav-btn:hover {
+  background: #222;
+  box-shadow: 0 8px 22px #2229;
+}
+@media (max-width: 1100px) {
+  nav { gap: 28px; }
+  .logo { margin-left: 16px; font-size: 1.55rem;}
+  .nav-btn {margin-right: 12px; font-size: 1.02rem;}
+  header { height: 76px;}
+}
+  .logo {
+  font-weight: 700;
+  font-size: 2.4rem;
+  letter-spacing: 0.05em;
+  color: #f2fff0;
+  margin-left: 56px;
+}
+  main{ padding:7.5rem 1.5rem 4rem; max-width:960px; margin:0 auto; box-sizing:border-box; }
+
+  .about-card{
+    background: rgba(252,255,250,0.98);
+    border-radius:30px;
+    box-shadow:0 8px 30px #b4dda055, 0 2px 12px #bdecb099 inset;
+    padding:48px 32px 36px; display:flex; flex-direction:column; align-items:center;
+  }
+  .about-title{ font-size:2.2rem; color:var(--green-700); font-weight:800; margin-bottom:8px; }
+  .about-main-text{ color:#234522; font-size:1.12rem; line-height:1.6; text-align:center; max-width:700px; margin-bottom:18px; }
+
+  .features-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+    gap:2.4rem;
+    width:100%; margin-top:6px;
+  }
+
+  /* Original cards (stay in place) */
+  .feature-card{
+    background: linear-gradient(135deg, var(--card-bg-start) 70%, var(--card-bg-end) 100%);
+    border-radius:18px; padding:28px 20px; text-align:center;
+    box-shadow:0 6px 16px #48e79a2e, 0 2px 0 #bcf3bd44 inset;
+    transition: transform 260ms cubic-bezier(.2,.8,.2,1), box-shadow 260ms;
+    cursor:pointer; user-select:none;
+  }
+  .feature-card:hover{ transform: translateY(-6px) scale(1.03); box-shadow:0 10px 32px rgba(0,0,0,0.08); }
+
+  .feature-icon{ font-size:3rem; display:block; margin-bottom:10px; filter: drop-shadow(0 2px 8px #97ecc444); }
+  .feature-title{ font-size:1.12rem; color:#1a633f; font-weight:700; margin-bottom:6px; }
+  .feature-desc{ color:#277018; font-size:1rem; font-weight:500; line-height:1.3; }
+
+  .highlight-msg{
+    margin-top:20px; display:inline-block; font-weight:700; padding:12px 28px; border-radius:12px;
+    background: linear-gradient(90deg,#baf99e 17%, #e3ffec 100%); color:#255012; box-shadow:0 2px 9px #d5fbc36c;
+  }
+
+  /* ------------ Overlay + modal clone (used on hover/tap) ------------ */
+  .overlay{
+    position:fixed; inset:0; display:none; align-items:center; justify-content:center;
+    background: rgba(0,0,0,0.22); backdrop-filter: blur(6px); z-index:1200; padding:28px;
+  }
+
+  .modal-card{
+    width:360px; max-width:calc(100vw - 56px);
+    background: linear-gradient(135deg, var(--card-bg-start) 70%, var(--card-bg-end) 100%);
+    border-radius:18px; padding:28px 22px; text-align:center;
+    box-shadow:0 20px 50px rgba(16,97,57,0.18), 0 4px 14px rgba(0,0,0,0.06);
+    transform: translateY(14px) scale(0.98); opacity:0; transition: transform 320ms cubic-bezier(.2,.8,.2,1), opacity 260ms;
+    position:relative;
+  }
+  .modal-card.active{ transform: translateY(0) scale(1); opacity:1; }
+
+  .modal-card .feature-icon{ font-size:3.8rem; margin-bottom:8px; }
+  .modal-card .feature-title{ font-size:1.18rem; margin-bottom:6px; }
+
+  /* slide-in description inside the modal */
+  .modal-card .feature-desc{
+    max-height:0; opacity:0; transform:translateY(12px);
+    overflow:hidden; transition: max-height 340ms cubic-bezier(.2,.8,.2,1), opacity 260ms, transform 260ms;
+  }
+  .modal-card.active .feature-desc{
+    max-height:260px; opacity:1; transform:translateY(0); margin-top:12px;
+  }
+
+  /* small close hint (optional) */
+  .close-hint{ position:absolute; top:10px; right:12px; font-size:0.82rem; color:#25603a; opacity:0.85; }
+
+  @media (max-width:600px){
+    .about-card{ padding:28px 4vw; }
+    .about-main-text{ font-size:1.02rem; }
+    header{ padding:0 12px; }
+  }
+</style>
+</head>
+<body>
+  <header>
+  <span class="logo">NutriVerse AI</span>
+  <nav>
+    <a href="welcome.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="about.html">About Us</a>
+    <a href="FAQ.html">FAQ</a>
+  </nav>
+  <button class="nav-btn" onclick="window.location.href='login.html'">Sign In / Sign Up</button>
+</header>
+
+
+  <!-- overlay used to show a centered clone of the hovered/tapped card -->
+  <div class="overlay" aria-hidden="true"></div>
+
+  <main>
+    <div class="about-card">
+      <div class="about-title">About NutriVerse AI</div>
+      <p class="about-main-text">
+        NutriVerse AI is built to empower healthy living through smart, joyful eating.<br />
+        Our mission: make nutrition data clear, actionable, and genuinely fun.<br /><br />
+        Using AI, we help you discover what's in your plate, plan better meals, and enjoy tracking your food journey with ease and confidence.
+      </p>
+
+      <div class="features-grid">
+        <div class="feature-card" data-desc="Just snap a meal—NutriVerse’s vision AI decodes nutrition instantly.">
+          <span class="feature-icon">🧑‍⚕️</span>
+          <div class="feature-title">Instant Food Analysis</div>
+          <div class="feature-desc">Just snap a meal—NutriVerse’s vision AI decodes nutrition instantly.</div>
+        </div>
+
+        <div class="feature-card" data-desc="Your unique goals, our dynamic AI advice. Super science at your fingertips.">
+          <span class="feature-icon">🧬</span>
+          <div class="feature-title">Personalized Guidance</div>
+          <div class="feature-desc">Your unique goals, our dynamic AI advice. Super science at your fingertips.</div>
+        </div>
+
+        <div class="feature-card" data-desc="Smart tips, joyful eating—live healthier, one meal at a time!">
+          <span class="feature-icon">💡</span>
+          <div class="feature-title">Better Habits</div>
+          <div class="feature-desc">Smart tips, joyful eating—live healthier, one meal at a time!</div>
+        </div>
+      </div>
+
+      <div class="highlight-msg">AI-powered nutrition, for everyone. Your healthy future starts today!</div>
+    </div>
+  </main>
+
+<script>
+  (function(){
+    const overlay = document.querySelector('.overlay');
+    const cards = document.querySelectorAll('.feature-card');
+
+    // Show a centered modal clone for a card
+    function showModalForCard(card) {
+      // clear previous
+      overlay.innerHTML = '';
+      overlay.style.display = 'flex';
+      overlay.setAttribute('aria-hidden','false');
+
+      // clone the card node (deep clone)
+      const modal = card.cloneNode(true);
+      // switch classes to modal variant
+      modal.classList.remove('feature-card');
+      modal.classList.add('modal-card');
+
+      // optional close hint
+      const hint = document.createElement('div');
+      modal.appendChild(hint);
+
+      // append and animate in one frame
+      overlay.appendChild(modal);
+      // allow layout then add active to animate
+      requestAnimationFrame(()=> {
+        modal.classList.add('active');
+      });
+
+      // close handlers:
+      function closeModal() {
+        modal.classList.remove('active');
+        overlay.setAttribute('aria-hidden','true');
+        // give the close animation time to run before removing
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          overlay.innerHTML = '';
+        }, 260);
+        document.removeEventListener('keydown', onKey);
+      }
+
+      // click outside modal closes
+      overlay.addEventListener('click', function onOverlayClick(e) {
+        if (e.target === overlay) {
+          overlay.removeEventListener('click', onOverlayClick);
+          closeModal();
+        }
+      });
+
+      // mouse leaving overlay closes (desktop behaviour)
+      overlay.addEventListener('mouseleave', function onLeave() {
+        overlay.removeEventListener('mouseleave', onLeave);
+        closeModal();
+      });
+
+      // esc key closes
+      function onKey(e) {
+        if (e.key === 'Escape') closeModal();
+      }
+      document.addEventListener('keydown', onKey);
+    }
+
+    // attach interactions: show on hover (desktop) and on click/tap (mobile)
+    cards.forEach(card => {
+      // desktop hover
+      card.addEventListener('mouseenter', () => showModalForCard(card));
+      // mobile / keyboard: click or focus
+      card.addEventListener('click', () => showModalForCard(card));
+      card.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showModalForCard(card); } });
+      // make cards focusable for keyboard accessibility
+      card.setAttribute('tabindex','0');
+    });
+
+    // Accessibility: close overlay on window blur (optional)
+    window.addEventListener('blur', () => {
+      if (overlay.style.display === 'flex') overlay.style.display = 'none';
+    });
+  })();
+</script>
+</body>
+</html>

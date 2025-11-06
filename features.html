@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NutriVerse AI - Features</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&400&display=swap" rel="stylesheet" />
+<style>
+  html, body {
+    margin: 0; padding: 0; min-height: 100vh; width: 100vw;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #d0f4c5 0%, #2e7d32 90%);
+    color: #121212;
+  }
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 72px;
+    background: rgba(46,125,50,0.9);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem;
+    z-index: 30;
+    box-shadow: 0 2px 15px rgba(32, 80, 25, 0.8);
+  }
+  .logo {
+    font-weight: 700;
+    font-size: 2.0rem;
+    letter-spacing: 0.05em;
+    color: #e6ffe2;
+  }
+  nav {
+    display: flex;
+    gap: 3rem;
+  }
+  nav a {
+    color:black;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.10em;
+    transition: color 0.3s ease;
+    cursor: pointer;
+  }
+  nav a:hover {
+    color: #1b5e20;
+  }
+  .nav-btn {
+  background: #000000; /* Black background */
+  color: #ffffff;      /* White text for contrast */
+  font-weight: 700;
+  padding: 0.6rem 2.2rem;
+  border-radius: 30px;
+  font-size: 1rem;
+  border: none; 
+  cursor: pointer;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+.nav-btn:hover {
+  background-color: #222222; /* Slightly lighter black on hover */
+}
+  main {
+    max-width: 1100px;
+    padding: 6rem 3rem 3rem 3rem;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  h1 {
+    font-weight: 900;
+    font-size: 3.5rem;
+    color: #2e7d32;
+    margin-bottom: 1.3rem;
+    text-align: center;
+  }
+  .features-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    justify-content: center;
+  }
+  .feature-card {
+    background: #edf7e7;
+    border-radius: 22px;
+    box-shadow: 0 4px 15px #c9e1a4aa;
+    flex: 1 1 280px;
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+  }
+  .feature-card:hover {
+    box-shadow: 0 8px 32px #9cc54acc;
+  }
+  .feature-card img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.3rem;
+  }
+  .feature-card h3 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 0.6rem;
+    color: #2e7d32;
+  }
+  .feature-card p {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #4b6823;
+  }
+  @media (max-width: 720px) {
+    main {
+      padding: 5rem 1.5rem 2rem 1.5rem;
+      max-width: 100vw;
+    }
+    .features-grid {
+      flex-direction: column;
+      gap: 2rem;
+      align-items: center;
+    }
+    .feature-card {
+      max-width: 320px;
+    }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="logo">NutriVerse AI</div>
+    <nav>
+      <a href="welcome.html">Home</a>
+      <a href="features.html">Features</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="about.html">About Us</a>
+      <a href="FAQ.html">FAQ</a>
+    </nav>
+    <button class="nav-btn" onclick="window.location.href='login.html'">Sign In / Sign Up</button>
+  </header>
+  <main>
+    <h1>Our Features</h1>
+    <div class="features-grid" role="list">
+      <section class="feature-card" role="listitem" aria-label="AI-Powered Food Recognition">
+        <img src="https://cdn-icons-png.flaticon.com/512/3132/3132693.png" alt="Food Recognition Icon" />
+        <h3>AI-Powered Food Recognition</h3>
+        <p>Upload food images to automatically detect your meal and provide accurate nutritional data.</p>
+      </section>
+      <section class="feature-card" role="listitem" aria-label="Personalized Nutrition Plans">
+        <img src="https://cdn-icons-png.flaticon.com/512/883/883407.png" alt="Personalized Diet Icon" />
+        <h3>Personalized Nutrition Plans</h3>
+        <p>Receive tailored dietary recommendations based on your health goals and preferences.</p>
+      </section>
+      <section class="feature-card" role="listitem" aria-label="Comprehensive Nutrient Breakdown">
+        <img src="https://cdn-icons-png.flaticon.com/512/415/415682.png" alt="Nutrition Info Icon" />
+        <h3>Comprehensive Nutrient Breakdown</h3>
+        <p>Get detailed info on calories, macros, vitamins, and minerals for informed choices.</p>
+      </section>
+      <section class="feature-card" role="listitem" aria-label="Friendly User Interface">
+        <img src="https://cdn-icons-png.flaticon.com/512/5570/5570231.png" alt="User Interface Icon" />
+        <h3>Friendly User Interface</h3>
+        <p>Enjoy an intuitive, easy-to-use interface for hassle-free meal tracking and analysis.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Smart Nutrition Analyzer</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:700&family=Inter&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  /* Reset and base */
+  body, html {margin:0; padding:0; height:100%; font-family:'Inter', sans-serif; background:#f0f4f8; color:#222; user-select:none;}
+  .container {
+    max-width: 1150px;
+    margin: 30px auto;
+    background: white;
+    border-radius: 16px;
+    padding: 24px 32px;
+    box-shadow: 0 12px 35px rgb(0 0 0 / 15%);
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Header */
+  #header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom: 2rem;
+  }
+  #profile {
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  #profileAvatar {
+    width: 52px;
+    height: 52px;
+    background: #2980b9;
+    border-radius: 50%;
+    color: white;
+    font-weight: 900;
+    font-size: 1.5rem;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    user-select:none;
+  }
+  #profileName {
+    font-weight:700;
+    font-size: 1.25rem;
+  }
+  #logoutBtn {
+    padding: 10px 22px;
+    background: #e74c3c;
+    border: none;
+    border-radius: 28px;
+    color: white;
+    font-weight:700;
+    font-size:1rem;
+    cursor:pointer;
+    user-select:none;
+    transition: background-color 0.3s ease;
+  }
+  #logoutBtn:hover {background: #c0392b;}
+
+
+  /* Page display */
+  .page { display:none; flex-direction: column; max-width: 380px; margin: auto; }
+  .page.active { display:flex; }
+
+
+  /* Container inside for auth */
+  .auth-container {
+    background: rgba(255 255 255 / 0.12);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    padding: 2.4rem 3rem;
+    color: white;
+  }
+
+
+  /* Form stylings */
+  h1 {
+    font-weight: 900;
+    margin-bottom: 1.6rem;
+    color: #279961;
+    user-select:none;
+  }
+  label {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  input, select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    border:none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #164724;
+    box-sizing: border-box;
+  }
+  input::placeholder {
+    color: #4e7b4e;
+  }
+  input[type="email"], input[type="password"], input[type="text"], input[type="number"], select {
+    background: #fff;
+  }
+  button[type="submit"] {
+    margin-top: 1.6rem;
+    padding: 1rem 0;
+    border-radius: 1.3rem;
+    border: none;
+    background: #279961;
+    color: white;
+    font-weight: 800;
+    font-size: 1.1rem;
+    cursor: pointer;
+    user-select:none;
+    transition: background-color 0.3s ease;
+  }
+  button[type="submit"]:hover { background: #1e6e45; }
+
+
+  .toggle-link {
+    user-select:none;
+    margin-top: 1rem;
+    cursor: pointer;
+    color: #32b084;
+    font-weight: 700;
+    text-align: center;
+  }
+  .toggle-link:hover {
+    text-decoration: underline;
+  }
+
+
+  /* Main page layout */
+  #mainPage {
+    display: none;
+    flex-direction: column;
+    min-height: 90vh;
+  }
+  main {
+    display:flex;
+    gap:32px;
+    flex-grow: 1;
+    flex-wrap: wrap;
+  }
+
+
+  #leftPanel, #rightPanel {
+    background: #eaf2fd;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgb(46 139 255 / 0.15);
+    padding: 24px 26px;
+    min-width: 330px;
+    max-width: 580px;
+    flex-grow: 1;
+    overflow-y:auto;
+  }
+
+
+  #uploadArea {
+    border: 3px dashed #279961;
+    border-radius: 20px;
+    cursor: pointer;
+    padding: 3rem 1rem;
+    text-align: center;
+    color: #279961;
+    font-weight: 700;
+    font-size: 1.3rem;
+    user-select: none;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  #uploadArea.dragover {
+    background-color: #b7f5d2;
+    border-color: #16ab5a;
+  }
+  #uploadArea i {
+    font-size: 4.5rem;
+    margin-bottom: 1rem;
+  }
+  #previewImg {
+    width: 100%;
+    max-height: 320px;
+    margin-top: 1.5rem;
+    border-radius: 24px;
+    box-shadow: 0 0 28px rgba(39, 185, 114, 0.6);
+    object-fit: contain;
+    user-select:none;
+    display: none;
+  }
+  #detectedDish {
+    margin-top: 16px;
+    border-radius: 24px;
+    padding: 14px 12px;
+    font-weight: 700;
+    font-size: 1.45rem;
+    text-align: center;
+    border:none;
+    background:#ccf1d6;
+    color: #238a43;
+    user-select:none;
+  }
+
+
+  /* Portion and pieces UI*/
+  #selectionContainer {
+    margin-top: 20px;
+  }
+  label[for="portionSize"], label[for="piecesInput"] {
+    font-weight: 700;
+    color: #238a43;
+    font-size: 1.2rem;
+  }
+  #portionSize, #piecesInput {
+    margin-top: 8px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 2px solid #279961;
+    color: #237d40;
+    outline: none;
+  }
+  #piecesInput {
+    width: 100px;
+  }
+
+
+  /* Buttons */
+  #analyzeBtn, #updateNutrition {
+    margin-top: 2rem;
+    width: 100%;
+    padding: 1.3rem 0;
+    font-size: 1.35rem;
+    font-weight: 900;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+    user-select:none;
+    transition: background-color 0.3s ease;
+  }
+  #analyzeBtn {
+    background: #279961;
+    color: white;
+  }
+  #analyzeBtn:hover:not(:disabled) {background: #1c6230;}
+  #analyzeBtn:disabled {
+    background: #9ce4b8;
+    cursor: not-allowed;
+  }
+  #updateNutrition {
+    background:#196530;
+    color: white;
+  }
+  #updateNutrition:hover:not(:disabled) {background: #14451e;}
+  #updateNutrition:disabled {
+    background:#7bb97e;
+    cursor: not-allowed;
+  }
+
+
+  /* Ingredient tables */
+  h3 {
+    font-weight: 900;
+    font-size: 1.3rem;
+    color: #279961;
+    letter-spacing: 0.07em;
+    margin-bottom: 12px;
+    user-select:none;
+  }
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 14px;
+    font-weight: 700;
+    font-size: 1.08rem;
+  }
+  th, td {
+    padding: 12px 20px;
+    border-radius: 20px;
+    background: white;
+  }
+  th {
+    text-align: left;
+    color: #1b4d2a;
+  }
+  td input[type=number] {
+    width: 90px;
+    padding: 8px 11px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    border-radius: 20px;
+    border: 2px solid #279961;
+    text-align: center;
+    color: #1b4d2a;
+    transition: border-color 0.3s ease;
+  }
+  td input[type=number]:focus {
+    border-color: #196530;
+    box-shadow: 0 0 15px #1a4e29aa;
+    outline: none;
+  }
+
+
+  /* Nutrition info */
+  #nutrition-section {
+    margin-top: 40px;
+    user-select: none;
+  }
+  #suggestions {
+    margin-top: 1rem;
+    background-color: #daf2d8;
+    border-left: 6px solid #1a7039;
+    border-radius: 20px;
+    color: #13411a;
+    font-weight: 700;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 0 22px rgba(27, 97, 27, 0.3);
+  }
+  #suggestions h4 {
+    font-weight: 900;
+    margin-bottom: 0.8rem;
+  }
+  #suggestions ul {
+    padding-left: 1.3rem;
+    margin: 0;
+  }
+  #suggestions li {
+    margin-bottom: 0.6rem;
+  }
+
+
+  @media (max-width: 900px) {
+    main {
+      flex-direction: column;
+      gap: 2rem;
+    }
+    #leftPanel, #rightPanel {
+      max-width: 100%;
+    }
+  }
+</style>
+</head>
+
+<body>
+  <div class="container" role="main">
+
+    <!-- Header & profile -->
+    <header id="header" aria-label="User profile and logout">
+      <div id="profile" class="profile">
+        <div id="profileAvatar" class="avatar" aria-live="polite" aria-label="User initials">SU</div>
+        <div id="profileName" class="username" aria-live="polite">Smart User</div>
+      </div>
+      <button id="logoutBtn" aria-label="Logout button"><a href="welcome.html">Logout</a></button>
+    </header>
+
+    <main>
+      <!-- Left Panel: Upload and dish detection -->
+      <section id="leftPanel" aria-label="Image upload and dish detection">
+        <div id="uploadArea" role="button" tabindex="0" aria-label="Upload food image">
+          <i class="fas fa-cloud-upload-alt" aria-hidden="true"></i>
+          <div>Click or drag & drop to upload your food image</div>
+          <input type="file" id="fileInput" accept="image/*" hidden />
+        </div>
+
+        <img id="previewImg" alt="Food preview" />
+
+        <input id="detectedDish" aria-readonly="true" readonly placeholder="Detected dish will appear here" />
+
+        <div id="selectionContainer">
+          <label id="piecesLabel" for="piecesInput" style="display:none; margin-top: 1rem;">Enter number of pieces:</label>
+          <input type="number" id="piecesInput" min="1" placeholder="Number of pieces" style="width: 100px;" />
+
+        </div>
+
+        <button id="analyzeBtn" disabled>Analyze</button>
+      </section>
+
+      <!-- Right Panel: Ingredients and nutrition info -->
+      <section id="rightPanel" aria-label="Ingredients and nutrition info">
+        <h3>Main Ingredients</h3>
+        <table id="mainIngredientsTable" aria-live="polite">
+          <thead>
+            <tr><th>Ingredient</th><th>Quantity (g)</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <h3>Additional Ingredients</h3>
+        <table id="additionalIngredientsTable" aria-live="polite">
+          <thead>
+            <tr><th>Ingredient</th><th>Quantity (g)</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <button id="updateNutrition" disabled>Update Nutrition</button>
+
+        <div id="nutrition-section" style="display:none" aria-live="polite">
+          <canvas id="nutritionChart" width="400" height="400" role="img" aria-label="Nutrition chart"></canvas>
+          <section id="suggestions" aria-atomic="true" aria-live="polite" role="region" style="display:none;">
+            <h4>Suggestions</h4>
+            <ul id="suggestionsList"></ul>
+          </section>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const API_URL = "http://localhost:5000";
+
+      const profileAvatar = document.getElementById("profileAvatar");
+      const profileName = document.getElementById("profileName");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      // Dynamically load stored user name and avatar initials
+      const storedUserName = localStorage.getItem('userName');
+      if (storedUserName && storedUserName.trim() !== "") {
+        profileName.textContent = storedUserName;
+
+        const initials = storedUserName.split(' ').map(w => w[0].toUpperCase()).join('');
+        profileAvatar.textContent = initials.length > 0 ? initials : "SU";
+      } else {
+        profileName.textContent = "Smart User";
+        profileAvatar.textContent = "SU";
+      }
+
+      const fileInput = document.getElementById("fileInput");
+      const uploadArea = document.getElementById("uploadArea");
+      const previewImg = document.getElementById("previewImg");
+      const detectedDish = document.getElementById("detectedDish");
+
+      const analyzeBtn = document.getElementById("analyzeBtn");
+
+      const piecesInput = document.getElementById("piecesInput");
+      const piecesLabel = document.getElementById("piecesLabel");
+
+      const mainIngredientsTable = document.getElementById("mainIngredientsTable").querySelector("tbody");
+      const additionalIngredientsTable = document.getElementById("additionalIngredientsTable").querySelector("tbody");
+
+      const updateNutrition = document.getElementById("updateNutrition");
+      const nutritionSection = document.getElementById("nutrition-section");
+
+      const suggestions = document.getElementById("suggestions");
+      const suggestionsList = document.getElementById("suggestionsList");
+
+      let detectedMainIngredients = [];
+      let detectedAdditionalIngredients = [];
+      let calorieMultiplier = 1;
+
+      const ctx = document.getElementById("nutritionChart").getContext("2d");
+      let nutritionChart = new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: ["Calories", "Protein", "Carbohydrates", "Fat"],
+          datasets: [
+            {
+              data: [1, 1, 1, 1],
+              backgroundColor: [
+                "#FE6D73",
+                "#77D970",
+                "#43B4FF",
+                "#FDA71B"
+              ],
+              borderColor: "#ffffff",
+              borderWidth: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: "top", labels: {color: '#333', font:{weight:'bold',size:14}} },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  const label = ctx.label || '';
+                  const val = ctx.raw || 0;
+                  return `${label}: ${val.toFixed(1)}`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      function resetUI() {
+        previewImg.style.display = "none";
+        detectedDish.value = "";
+        mainIngredientsTable.innerHTML = "";
+        additionalIngredientsTable.innerHTML = "";
+        updateNutrition.disabled = true;
+        nutritionSection.style.display = "none";
+        suggestions.style.display = "none";
+        calorieMultiplier = 1;
+        piecesInput.value = "";
+        piecesInput.style.display = "none";
+        piecesLabel.style.display = "none";
+        analyzeBtn.disabled = true;
+      }
+
+      uploadArea.onclick = () => fileInput.click();
+      uploadArea.ondragover = (e) => {
+        e.preventDefault();
+        uploadArea.classList.add("dragover");
+      };
+      uploadArea.ondragleave = (e) => uploadArea.classList.remove("dragover");
+      uploadArea.ondrop = (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove("dragover");
+        if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+      };
+      fileInput.onchange = () => {
+        if (fileInput.files.length) handleFile(fileInput.files[0]);
+      };
+
+      function handleFile(file) {
+        if (!file.type.startsWith("image/")) {
+          alert("Please upload a valid image file.");
+          return;
+        }
+        resetUI();
+        previewImg.src = URL.createObjectURL(file);
+        previewImg.style.display = "block";
+        analyzeBtn.disabled = false;
+        detectedMainIngredients = [];
+        detectedAdditionalIngredients = [];
+      }
+
+      function showAmountInput(isPieces) {
+      if (isPieces) {
+        piecesInput.style.display = "";
+        piecesLabel.style.display = "";
+      } else {
+        piecesInput.style.display = "none";
+        piecesLabel.style.display = "none";
+       }
+     }  
+
+
+      analyzeBtn.onclick = () => {
+        if (!fileInput.files.length) {
+          alert("Please upload an image.");
+          return;
+        }
+        analyzeBtn.disabled = true;
+        const formData = new FormData();
+        formData.append("mealImage", fileInput.files[0]);
+
+        fetch(`${API_URL}/upload_meal`, {
+          method: "POST",
+          body: formData
+        }).then(r => r.json())
+          .then(data => {
+            analyzeBtn.disabled = false;
+            if (data.error) {
+              alert(data.error);
+              return;
+            }
+            detectedDish.value = data.dish;
+
+            const piecesFoods = ["Donut", "Burger", "Idli", "Jalebi", "Dhokla", "Roti", "Kulfi", "Roll"];
+            const dishName = data.dish || "";
+            const dishLower = dishName.toLowerCase();
+            const isPieceType = piecesFoods.some(f => f.toLowerCase() === dishLower);
+
+            showAmountInput(isPieceType);
+
+            calorieMultiplier = 1;
+
+            detectedMainIngredients = data.defaults || [];
+            detectedAdditionalIngredients = data.additionals || [];
+
+            renderIngredients();
+            updateNutrition.disabled = false;
+
+            nutritionSection.style.display = "none";
+            suggestions.style.display = "none";
+          }).catch(() => {
+            alert("Failed to analyze image.");
+            analyzeBtn.disabled = false;
+          });
+      };
+
+      piecesInput.oninput = () => {
+        if (piecesInput.style.display !== "none") {
+          calorieMultiplier = parseInt(piecesInput.value) || 1;
+        }
+      };
+
+      function renderIngredients() {
+        mainIngredientsTable.innerHTML = "";
+        if (detectedMainIngredients.length === 0) {
+          mainIngredientsTable.innerHTML = '<tr><td colspan="2">No main ingredients found.</td></tr>';
+        } else {
+          detectedMainIngredients.forEach(({ name, grams }) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td>${name}</td><td>${grams}</td>`;
+            mainIngredientsTable.appendChild(tr);
+          });
+        }
+        additionalIngredientsTable.innerHTML = "";
+        if (detectedAdditionalIngredients.length === 0) {
+          additionalIngredientsTable.innerHTML = '<tr><td colspan="2">No additional ingredients found.</td></tr>';
+        } else {
+          detectedAdditionalIngredients.forEach(({ name, grams }, idx) => {
+            const tr = document.createElement("tr");
+            const valAttr = grams && grams !== 0 ? grams : "";
+            tr.innerHTML = `<td>${name}</td><td><input type="number" min="0" placeholder="Enter grams" value="${valAttr}" data-index="${idx}" /></td>`;
+            additionalIngredientsTable.appendChild(tr);
+          });
+          additionalIngredientsTable.querySelectorAll("input[type=number]").forEach(input => {
+            input.addEventListener("input", (e) => {
+              const idx = e.target.dataset.index;
+              let val = parseFloat(e.target.value);
+              if (isNaN(val) || val < 0) val = 0;
+              e.target.value = val === 0 ? "" : val;
+              detectedAdditionalIngredients[idx].grams = val;
+            });
+            input.addEventListener("focus", (e) => {
+              if (e.target.value === "0") e.target.value = "";
+            });
+            input.addEventListener("blur", (e) => {
+              if (e.target.value.trim() === "") e.target.value = "";
+            });
+          });
+        }
+      }
+
+      updateNutrition.onclick = () => {
+      const combinedIngredients = [ 
+      ...detectedMainIngredients,
+      ...detectedAdditionalIngredients,
+    ].map(ing => ({
+     name: ing.name,
+     grams: (ing.grams || 0) * calorieMultiplier,
+     }));
+
+    fetch(`${API_URL}/calculate_nutrition`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ ingredients: combinedIngredients }),
+    }).then(r => r.json())
+    .then(data => {
+      if(data.error) {
+        alert(data.error);
+        return;
+      }
+
+      // Ensure fat value is at least 0.1 for pie chart visibility
+      const fatVal = Math.max(data.totals.fat, 0.1);
+
+      nutritionChart.data.datasets[0].data = [
+        data.totals.calories,
+        data.totals.protein,
+        data.totals.carbs,
+        fatVal,
+      ];
+      nutritionChart.update();
+
+      if(data.suggestions && data.suggestions.length > 0) {
+        suggestions.style.display = "block";
+        suggestionsList.innerHTML = data.suggestions.map(s => `<li>${s}</li>`).join("");
+      } else {
+        suggestions.style.display = "none";
+        suggestionsList.innerHTML = "";
+      }
+      nutritionSection.style.display = "block";
+    }).catch(() => {
+      alert("Failed to calculate nutrition.");
+    });
+   };
+
+
+      logoutBtn.onclick = () => {
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userAge');
+        localStorage.removeItem('userWeight');
+        localStorage.removeItem('userHeight');
+        localStorage.removeItem('userHealthConditions');
+        localStorage.removeItem('userLifestyle');
+
+        profileAvatar.textContent = "SU";
+        profileName.textContent = "Smart User";
+
+        detectedMainIngredients = [];
+        detectedAdditionalIngredients = [];
+        calorieMultiplier = 1;
+
+        previewImg.style.display = "none";
+        detectedDish.value = "";
+        mainIngredientsTable.innerHTML = "";
+        additionalIngredientsTable.innerHTML = "";
+        updateNutrition.disabled = true;
+        nutritionSection.style.display = "none";
+        suggestions.style.display = "none";
+        analyzeBtn.disabled = true;
+        fileInput.value = "";
+        piecesInput.value = "";
+        piecesInput.style.display = "none";
+        piecesLabel.style.display = "none";
+      };
+    });
+  </script>
+</body>
+
+</html>

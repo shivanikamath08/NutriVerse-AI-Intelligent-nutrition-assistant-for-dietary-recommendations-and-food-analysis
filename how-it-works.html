@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How It Works - NutriVerse AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&400&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0; padding: 0; min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #d0fadf 0%, #2f7e32 90%);
+      color: #121212;
+    }
+    header {
+      position: fixed; top:0; left:0; right:0;
+      height: 72px;
+      background: rgba(46,125,50,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      box-shadow: 0 2px 15px rgba(0,80,20,0.82);
+      z-index: 30;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: 0.05em;
+      color: #e6ffe2;
+      user-select: none;
+    }
+    nav {
+      display: flex; gap: 2rem;
+    }
+    nav a {
+      color: black;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+    nav a:hover {
+      color: #1b5e20;
+    }
+    .nav-btn {
+      background: black;
+      color: white;
+      font-weight: 700;
+      padding: 0.6rem 2.2rem;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      user-select: none;
+      transition: background-color 0.25s ease;
+    }
+    .nav-btn:hover {
+      background-color: #222;
+    }
+    main {
+      max-width: 960px;
+      margin: 100px auto 50px;
+      padding: 0 20px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #2f6627;
+      margin-bottom: 3rem;
+      user-select: none;
+    }
+    .flowchart {
+      max-width: 800px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 18px;
+      padding: 2rem 3rem;
+      box-shadow: 0 5px 18px rgba(0,0,0,0.2);
+      font-size: 1.15rem;
+      line-height: 1.7;
+      user-select: none;
+      position: relative;
+    }
+    .step {
+      margin-bottom: 2rem;
+      position: relative;
+      padding-left: 2.5rem;
+    }
+    .step::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      background-color: #357a38;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #357a38aa;
+    }
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 0.65rem;
+      top: 2rem;
+      width: 0;
+      height: 3rem;
+      border-left: 3px solid #357a38;
+    }
+    @media (max-width: 700px) {
+      main {
+        margin: 80px 10px 40px;
+        padding: 0 10px;
+      }
+      .flowchart {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">NutriVerse AI</div>
+    <nav>
+      <a href="welcome.html">Home</a>
+      <a href="features.html">Features</a>
+      <a href="how-it-works.html" style="color: #2f6627;">How It Works</a>
+      <a href="about.html">About</a>
+      <a href="FAQ.html">FAQ</a>
+    </nav>
+    <button class="nav-btn" onclick="window.location.href='login.html'">Sign In / Sign Up</button>
+  </header>
+  <main role="main" aria-label="How NutriVerse AI works">
+    <h1>How NutriVerse AI Works</h1>
+    <div class="flowchart">
+      <div class="step">User logs in or creates an account.</div>
+      <div class="step">User uploads a clear photo of their meal.</div>
+      <div class="step">Photo is sent to our secure backend server.</div>
+      <div class="step">Backend uses YOLO AI model to detect the dish and ingredients in the image.</div>
+      <div class="step">Detected ingredients are matched with nutrition data from our extensive database.</div>
+      <div class="step">The system calculates total calories, protein, carbs, and fat using standard nutritional formulas.</div>
+      <div class="step">Analyzed information and personalized health suggestions are sent back to the frontend.</div>
+      <div class="step">User reviews the nutrition report and can adjust quantities or portion sizes if needed.</div>
+      <div class="step">Upon adjustment, the system recalculates nutrition values for updated accuracy.</div>
+      <div class="step">User logs out or proceeds to analyze another meal at their convenience.</div>
+    </div>
+  </main>
+</body>
+</html>

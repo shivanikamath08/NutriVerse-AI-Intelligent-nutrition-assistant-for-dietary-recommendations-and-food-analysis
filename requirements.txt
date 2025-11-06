@@ -1,0 +1,30 @@
+# Smart Nutrition Analyzer - Updated Compatible Requirements
+
+# Core Flask dependencies
+Flask==3.0.0
+Flask-CORS==4.0.0
+Werkzeug==3.0.1
+
+# Machine Learning and Computer Vision
+ultralytics>=8.0.196
+torch>=2.0.0
+torchvision>=0.15.0
+opencv-python>=4.8.0
+Pillow>=10.2.0
+numpy>=1.24.0
+
+# API and Data handling
+requests>=2.31.0
+# sqlite3 is built-in with Python
+
+# Image processing utilities
+opencv-contrib-python>=4.8.0
+
+# Additional utilities
+python-dateutil>=2.8.2
+
+# Development dependencies
+python-dotenv>=1.0.0
+
+# Security utilities
+secure>=0.3.0

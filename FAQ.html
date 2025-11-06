@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NutriVerse AI - FAQ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;400&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #d0fadf 0%, #2f7e32 90%);
+      color: #121212;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 72px;
+      background: rgba(46, 125, 50, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      z-index: 30;
+      box-shadow: 0 2px 15px rgba(0, 80, 20, 0.8);
+      user-select: none;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: 0.05em;
+      color: #e6ffe2;
+    }
+
+    nav {
+      display: flex;
+      gap: 3rem;
+    }
+
+    nav a {
+      color: black;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+
+    nav a:hover {
+      color: #1b5e20;
+    }
+
+    .nav-btn {
+      background: black;
+      color: white;
+      padding: 0.6rem 2.2rem;
+      border-radius: 30px;
+      border: none;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+      user-select: none;
+    }
+
+    .nav-btn:hover {
+      background-color: #222;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 100px auto 50px;
+      padding: 0 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #276335;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 2.5rem;
+    }
+
+    .faq-item {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 18px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      border-left: 6px solid #3ea742;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .faq-item:hover {
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .question {
+      padding: 1.4rem 2rem;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #2f6627;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+    }
+
+    .question::after {
+      content: "+";
+      position: absolute;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: #2f6627;
+      transition: transform 0.3s ease;
+    }
+
+    .question.active::after {
+      content: "-";
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .answer {
+      padding: 0 2rem 1.6rem 2rem;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      user-select: text;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.3s ease, opacity 0.3s ease;
+    }
+
+    .answer.active {
+      max-height: 500px; /* sufficient max height */
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        max-width: 95vw;
+        margin: 90px 10px 30px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">NutriVerse AI</div>
+    <nav>
+      <a href="welcome.html">Home</a>
+      <a href="features.html">Features</a>
+      <a href="how-it-works.html">How it Works</a>
+      <a href="about.html">About</a>
+      <a href="FAQ.html" style="color: #2f6627;">FAQ</a>
+    </nav>
+    <button class="nav-btn" onclick="window.location.href='login.html'">Sign In / Sign Up</button>
+  </header>
+
+  <main aria-label="Frequently Asked Questions">
+    <h1>Frequently Asked Questions</h1>
+
+    <div class="faq-item">
+      <div class="question" tabindex="0">How do I use NutriVerse AI?</div>
+      <div class="answer">
+        <p>Create your account or sign in, then upload a clear photo of your meal. NutriVerse AI will analyze and provide an instant nutrition breakdown and personalized tips.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="question" tabindex="0">How accurate is the food detection?</div>
+      <div class="answer">
+        <p>Our AI model is trained on extensive datasets, achieving good accuracy for common foods. Accuracy depends on image quality and complexity of the meal.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="question" tabindex="0">What if my dish is not recognized?</div>
+      <div class="answer">
+        <p>If detection fails, you can manually edit ingredients to ensure accurate nutrition calculation.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="question" tabindex="0">How do portion and piece inputs affect nutrition?</div>
+      <div class="answer">
+        <p>For food items like donuts or idlis, inputting the number of pieces allows precise calculations. Otherwise, portion sizes (e.g., small, medium, large) scale the nutritional values.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="question" tabindex="0">Where do you get your nutrition data?</div>
+      <div class="answer">
+        <p>We use a comprehensive nutrition database compiled from trusted sources formatted into CSV files, mapping ingredients to their nutritional content.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="question" tabindex="0">Is my data safe with NutriVerse?</div>
+      <div class="answer">
+        <p>Your data, including uploaded images, is securely handled and not stored or shared beyond the analysis process.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="question" tabindex="0">Can I track my diet with NutriVerse?</div>
+      <div class="answer">
+        <p>NutriVerse helps in understanding nutrition, though for medical advice and detailed tracking, consult professional dietitians.</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const questions = document.querySelectorAll('.question');
+
+    questions.forEach(question => {
+      question.addEventListener('click', () => {
+        question.classList.toggle('active');
+        const answer = question.nextElementSibling;
+        if (answer.classList.contains('active')) {
+          answer.classList.remove('active');
+          question.setAttribute('aria-expanded', 'false');
+        } else {
+          answer.classList.add('active');
+          question.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      question.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          question.click();
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
